@@ -5,11 +5,18 @@
   elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.2">
   <element name="alert">
     <annotation>
-      <documentation>Dipartimento della Protezione Civile - EDXL CAP - Italian Profile (CAP-IT) - https://edxl-it.protezionecivile.it/</documentation>
+      <documentation>Dipartimento della Protezione Civile - EDXL CAP - Italian Profile (CAP-IT) -
+        https://edxl-it.protezionecivile.it/</documentation>
     </annotation>
     <complexType>
       <sequence>
-        <element name="identifier" type="xs:string"/>
+        <element name="identifier">
+          <simpleType>
+            <restriction base="xs:string">
+              <pattern value="[0-9a-z]{8}(-)[0-9a-z]{4}(-)[0-9a-z]{4}(-)[0-9a-z]{4}(-)[0-9a-z]{12}"/>
+            </restriction>
+          </simpleType>
+        </element>
         <element name="sender" type="xs:string"/>
         <element name="sent">
           <simpleType>

@@ -1,0 +1,329 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "urn:oasis:names:tc:emergency:cap:1.2#",
+    "definitions": {
+        "alert.info.eventCode": {
+            "type": "object",
+            "required": [
+                "valueName",
+                "value"
+            ],
+            "properties": {
+                "valueName": {"type": "string"},
+                "value": {"type": "string"}
+            }
+        },
+        "alert.info.parameter": {
+            "type": "object",
+            "required": [
+                "valueName",
+                "value"
+            ],
+            "properties": {
+                "valueName": {"type": "string"},
+                "value": {"type": "string"}
+            }
+        },
+        "alert.info.resource": {
+            "type": "object",
+            "required": [
+                "resourceDesc",
+                "mimeType"
+            ],
+            "properties": {
+                "resourceDesc": {"type": "string"},
+                "mimeType": {"type": "string"},
+                "size": {"type": "integer"},
+                "uri": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "derefUri": {"type": "string"},
+                "digest": {"type": "string"}
+            }
+        },
+        "alert.info.area.geocode": {
+            "type": "object",
+            "required": [
+                "valueName",
+                "value"
+            ],
+            "properties": {
+                "valueName": {"type": "string"},
+                "value": {"type": "string"}
+            }
+        },
+        "alert.info.area": {
+            "type": "object",
+            "required": ["areaDesc"],
+            "properties": {
+                "areaDesc": {"type": "string"},
+                "polygon": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "minItems": 0
+                },
+                "circle": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "minItems": 0
+                },
+                "geocode": {
+                    "type": "array",
+                    "items": {"$ref": "#/definitions/alert.info.area.geocode"},
+                    "minItems": 0
+                },
+                "altitude": {"type": "number"},
+                "ceiling": {"type": "number"}
+            }
+        },
+        "alert.info": {
+            "type": "object",
+            "required": [
+                "category",
+                "event",
+                "urgency",
+                "severity",
+                "certainty"
+            ],
+            "properties": {
+                "language": {"type": "string"},
+                "category": {
+                    "type": "array",
+                    "items": {
+                        "allOf": [
+                            {"type": "string"},
+                            {
+                                "enum": [
+                                    "Geo",
+                                    "Met",
+                                    "Safety",
+                                    "Security",
+                                    "Rescue",
+                                    "Fire",
+                                    "Health",
+                                    "Env",
+                                    "Transport",
+                                    "Infra",
+                                    "CBRNE",
+                                    "Other"
+                                ]
+                            }
+                        ]
+                    },
+                    "minItems": 1
+                },
+                "event": {"type": "string"},
+                "responseType": {
+                    "type": "array",
+                    "items": {
+                        "allOf": [
+                            {"type": "string"},
+                            {
+                                "enum": [
+                                    "Shelter",
+                                    "Evacuate",
+                                    "Prepare",
+                                    "Execute",
+                                    "Avoid",
+                                    "Monitor",
+                                    "Assess",
+                                    "AllClear",
+                                    "None"
+                                ]
+                            }
+                        ]
+                    },
+                    "minItems": 0
+                },
+                "urgency": {
+                    "allOf": [
+                        {"type": "string"},
+                        {
+                            "enum": [
+                                "Immediate",
+                                "Expected",
+                                "Future",
+                                "Past",
+                                "Unknown"
+                            ]
+                        }
+                    ]
+                },
+                "severity": {
+                    "allOf": [
+                        {"type": "string"},
+                        {
+                            "enum": [
+                                "Extreme",
+                                "Severe",
+                                "Moderate",
+                                "Minor",
+                                "Unknown"
+                            ]
+                        }
+                    ]
+                },
+                "certainty": {
+                    "allOf": [
+                        {"type": "string"},
+                        {
+                            "enum": [
+                                "Observed",
+                                "Likely",
+                                "Possible",
+                                "Unlikely",
+                                "Unknown"
+                            ]
+                        }
+                    ]
+                },
+                "audience": {"type": "string"},
+                "eventCode": {
+                    "type": "array",
+                    "items": {"$ref": "#/definitions/alert.info.eventCode"},
+                    "minItems": 0
+                },
+                "effective": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "onset": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "expires": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "senderName": {"type": "string"},
+                "headline": {"type": "string"},
+                "description": {"type": "string"},
+                "instruction": {"type": "string"},
+                "web": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "contact": {"type": "string"},
+                "parameter": {
+                    "type": "array",
+                    "items": {"$ref": "#/definitions/alert.info.parameter"},
+                    "minItems": 0
+                },
+                "resource": {
+                    "type": "array",
+                    "items": {"$ref": "#/definitions/alert.info.resource"},
+                    "minItems": 0
+                },
+                "area": {
+                    "type": "array",
+                    "items": {"$ref": "#/definitions/alert.info.area"},
+                    "minItems": 0
+                }
+            }
+        },
+        "alert": {
+            "type": "object",
+            "required": [
+                "identifier",
+                "sender",
+                "sent",
+                "status",
+                "msgType",
+                "scope"
+            ],
+            "properties": {
+                "identifier": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "sender": {"type": "string"},
+                "sent": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "status": {
+                    "allOf": [
+                        {"type": "string"},
+                        {
+                            "enum": [
+                                "Actual",
+                                "Exercise",
+                                "System",
+                                "Test",
+                                "Draft"
+                            ]
+                        }
+                    ]
+                },
+                "msgType": {
+                    "allOf": [
+                        {"type": "string"},
+                        {
+                            "enum": [
+                                "Alert",
+                                "Update",
+                                "Cancel",
+                                "Ack",
+                                "Error"
+                            ]
+                        }
+                    ]
+                },
+                "source": {"type": "string"},
+                "scope": {
+                    "allOf": [
+                        {"type": "string"},
+                        {
+                            "enum": [
+                                "Public",
+                                "Restricted",
+                                "Private"
+                            ]
+                        }
+                    ]
+                },
+                "restriction": {"type": "string"},
+                "addresses": {"type": "string"},
+                "code": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "minItems": 0
+                },
+                "note": {"type": "string"},
+                "references": {"type": "string"},
+                "incidents": {"type": "string"},
+                "info": {
+                    "type": "array",
+                    "items": {"$ref": "#/definitions/alert.info"},
+                    "minItems": 0
+                },
+                "Any": {
+                    "type": "array",
+                    "items": {"type": "object"},
+                    "minItems": 0
+                }
+            }
+        }
+    },
+    "anyOf": [
+        {
+            "type": "object",
+            "properties": {
+                "alert": {"$ref": "#/definitions/alert"}
+            }
+        },
+        {
+            "type": "object",
+            "properties": {
+                "valueName": {"type": "string"}
+            }
+        },
+        {
+            "type": "object",
+            "properties": {
+                "value": {"type": "string"}
+            }
+        }
+    ]
+}
